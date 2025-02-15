@@ -1,0 +1,14 @@
+/api/.bundle
+/api/log/*
+/api/tmp/*
+!/log/.keep
+!/tmp/.keep
+/api/tmp/pids/*
+!/tmp/pids/
+!/tmp/pids/.keep
+/api/storage/*
+!/storage/.keep
+/api/tmp/storage/*
+!/tmp/storage/
+!/tmp/storage/.keep
+/api/config/master.key

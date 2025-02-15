@@ -1,0 +1,28 @@
+{
+  "name": "Ruby on Rails & Postgres",
+  "dockerComposeFile": "docker-compose.dev.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "hostRequirements": {
+    "cpus": 2
+  },
+  // Configure tool-specific properties.
+  "customizations": {
+    // Configure properties specific to VS Code.
+    "vscode": {
+      // Add the IDs of extensions you want installed when the container is created.
+      "extensions": ["rebornix.Ruby"]
+    }
+  },
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  // This can be used to network with other containers or the host.
+  "forwardPorts": [5432, 3000],
+  // Use 'postCreateCommand' to run commands after the container is created.
+  "postCreateCommand": "bundle install && yarn install && rake db:setup",
+  "postStartCommand": "rails s -p 3000",
+  // Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+  // "remoteUser": "vscode",
+  "features": {
+    "git": "os-provided"
+  }
+}

@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      db:
+        env:
+          POSTGRES_DB: todo_test
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+        image: postgres:13
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      - name: Install packages
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y google-chrome-stable curl libjemalloc2 libvips sqlite3
+
+      - name: Install db package
+        run: sudo apt-get -yqq install libpq-dev
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ruby-3.1.4
+
+      - name: Install gems
+        working-directory: api
+        run: bundle install --jobs 4 --retry 3
+
+      - name: Migrate DB
+        working-directory: api
+        env:
+          RAILS_ENV: test
+          PG_HOST: localhost
+        run: bundle exec rake db:migrate
+
+      - name: Run tests
+        working-directory: api
+        env:
+          RAILS_ENV: test
+          PG_HOST: localhost
+        run: bin/rails db:test:prepare test
