@@ -313,5 +313,6 @@ Devise.setup do |config|
 
   config.jwt do |jwt|
     jwt.secret = Rails.application.credentials.devise_jwt_secret_key!
+    jwt.expiration_time = 43800 * 6 * 60 # 6 months in seconds
   end
 end

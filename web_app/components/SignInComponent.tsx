@@ -4,6 +4,7 @@ import PasswordInput from "./inputs/PasswordInput";
 import Button from "./Button";
 import { loginUser } from "@/api/users";
 import { showToast } from "@/utils/toastHelper";
+import Image from "next/image";
 
 export default function SignInComponent() {
   const [email, setEmail] = useState("");
@@ -22,7 +23,11 @@ export default function SignInComponent() {
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="flex flex-col space-y-3 w-1/5">
-        <div className="flex flex-col space-y-1">
+        <div className="flex justify-center items-center">
+          <Image src="/logo.jpeg" alt="" height={210} width={210} />
+        </div>
+
+        <div className="flex flex-col space-y-1 mt-2">
           <span>Email</span>
           <Input value={email} setValue={setEmail} />
         </div>

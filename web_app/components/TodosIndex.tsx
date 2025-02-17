@@ -71,6 +71,11 @@ export default function TodosIndex() {
     setConfirmation(false);
   };
 
+  const handleLogout = async () => {
+    localStorage.removeItem("authToken");
+    window.location.href = "/";
+  };
+
   useEffect(() => {
     fetchTodos();
   }, [status]);
@@ -78,9 +83,9 @@ export default function TodosIndex() {
   return (
     <div className="flex justify-center h-screen">
       <div className="flex flex-col space-y-3 w-3/5 mt-11">
-        <span className="text-xl font-bold">To-do</span>
+        <span className="text-xl font-bold">TO-DOs</span>
 
-        <div className="flex-col h-[80%] mt-4 w-full">
+        <div className="flex-col h-18 mt-4 w-full">
           <div className="flex justify-between py-2">
             <Button
               width="w-24"
@@ -112,9 +117,11 @@ export default function TodosIndex() {
           </div>
 
           <hr className="w-full border border-black m-0" />
+        </div>
 
-          <div className="flex-col w-full overflow-y-auto space-y-2">
-            {todos.map((todo) => (
+        <div className="flex-col w-full space-y-2 h-[75%] overflow-y-scroll">
+          {todos.length > 0 ? (
+            todos.map((todo) => (
               <div className="flex-col w-full pt-3 space-y-2" key={todo.slug}>
                 <div className="flex w-full">
                   <span className="w-4/12">{todo.name}</span>
@@ -180,11 +187,18 @@ export default function TodosIndex() {
 
                 <hr className="w-full border border-gray-300 m-0" />
               </div>
-            ))}
-          </div>
+            ))
+          ) : (
+            <div className="flex justify-center items-center">
+              <span className="font-semibold text-xl">No To-Do Found</span>
+            </div>
+          )}
         </div>
         <div className="flex justify-end">
-          <span className="text-sm cursor-pointer hover:underline">
+          <span
+            className="text-sm cursor-pointer hover:underline"
+            onClick={handleLogout}
+          >
             Log out
           </span>
         </div>
