@@ -1,5 +1,5 @@
 {
-  "name": "Ruby on Rails & Postgres",
+  "name": "Ruby on Rails & Postgres - TODO",
   "dockerComposeFile": "docker-compose.dev.yml",
   "service": "app",
   "workspaceFolder": "/workspace",
