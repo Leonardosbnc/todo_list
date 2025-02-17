@@ -5,6 +5,7 @@ import Button from "../Button";
 import { createTodo, updateTodo } from "@/api/todos";
 import { showToast } from "@/utils/toastHelper";
 import { ITodo } from "@/interfaces";
+import Loader from "../Loader";
 
 interface IProps {
   isOpen: boolean;
@@ -18,12 +19,16 @@ export default function CreateTodoModal({
   initialData,
 }: IProps) {
   const [name, setName] = useState(initialData?.name || "");
+  const [saving, setSaving] = useState(false);
 
   const handleSaveTodo = async () => {
+    if (saving) return;
+
     if (name.length < 4 || name.length > 40) {
       showToast("error", "Name must be between 4 and 40 characters");
       return;
     }
+    setSaving(true);
 
     const saveFunc = initialData?.slug
       ? updateTodo(initialData.slug, { name })
@@ -42,6 +47,7 @@ export default function CreateTodoModal({
       }, 1500);
       return;
     }
+    setSaving(false);
     showToast("error", data?.error || "Something went wrong...");
   };
 
@@ -56,7 +62,7 @@ export default function CreateTodoModal({
         </div>
 
         <Button type="save" onClick={handleSaveTodo}>
-          Save
+          {saving ? <Loader /> : "Save"}
         </Button>
       </div>
     </BaseModal>

@@ -9,6 +9,7 @@ import { ITodo } from "@/interfaces";
 import ConfirmationModal from "../modals/ConfirmationModal";
 import { showToast } from "@/utils/toastHelper";
 import TodoTable from "./TodoTable";
+import Loader from "../Loader";
 
 const headers = [
   { label: "Name", className: "w-4/12" },
@@ -22,6 +23,7 @@ export default function TodosIndex() {
   const [status, setStatus] = useState<string | undefined>();
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [editModalData, setEditModalData] = useState<ITodo | undefined>();
+  const [loading, setLoading] = useState(true);
   const [filterModalOpen, setFilterModalOpen] = useState(false);
   const [confirmation, setConfirmation] = useState<
     boolean | "complete" | "delete"
@@ -29,8 +31,11 @@ export default function TodosIndex() {
   const [slugToAction, setSlugToAction] = useState("");
 
   const fetchTodos = async () => {
+    setLoading(true);
     const { data } = await getTodos({ status });
     if (data?.todos) setTodos(data.todos);
+
+    setLoading(false);
   };
 
   const handleCompleteTodo = async () => {
@@ -120,12 +125,16 @@ export default function TodosIndex() {
           <hr className="w-full border border-black m-0" />
         </div>
 
-        <TodoTable
-          todos={todos}
-          setEditModalData={setEditModalData}
-          setSlugToAction={setSlugToAction}
-          setConfirmation={setConfirmation}
-        />
+        {loading ? (
+          <Loader />
+        ) : (
+          <TodoTable
+            todos={todos}
+            setEditModalData={setEditModalData}
+            setSlugToAction={setSlugToAction}
+            setConfirmation={setConfirmation}
+          />
+        )}
         <div className="flex justify-end">
           <span
             className="text-sm cursor-pointer hover:underline"
