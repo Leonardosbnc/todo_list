@@ -5,7 +5,7 @@ interface ButtonProps {
   onClick: () => void;
   children: ReactNode;
   width?: string;
-  type: "save" | "normal";
+  type: "save" | "normal" | "filter" | "delete";
 }
 
 export default function Button({
@@ -20,6 +20,10 @@ export default function Button({
     switch (type) {
       case "save":
         return "bg-green-500 text-white hover:bg-green-600 duration-500";
+      case "delete":
+        return "bg-red-500 text-white hover:bg-red-600 duration-500";
+      case "filter":
+        return "bg-purple-500 text-white hover:bg-purple-600 duration-500";
       case "normal":
         return defaultClassName;
       default:

@@ -10,12 +10,22 @@ async function request(
   const fullEndpoint = buildFullEndpoint(endpoint, params);
   try {
     const response = await fetch(`${SERVER_URL}${fullEndpoint}`, options);
+
+    if (response.status === 401) {
+      throw new Error("Unathorized");
+    }
+
+    const data = response.status !== 204 ? await response.json() : null;
     return {
       status: response.status,
-      data: await response.json(),
+      data,
       headers: response.headers,
     };
   } catch (error: any) {
+    if (error.message === "Unathorized" && window.location.pathname !== "/") {
+      window.location.href = "/";
+    }
+
     return { status: "error", success: false };
   }
 }

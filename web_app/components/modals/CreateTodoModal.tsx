@@ -2,25 +2,41 @@ import { useState } from "react";
 import Input from "../inputs/Input";
 import BaseModal from "./BaseModal";
 import Button from "../Button";
-import { createTodo } from "@/api/todos";
+import { createTodo, updateTodo } from "@/api/todos";
 import { showToast } from "@/utils/toastHelper";
+import { ITodo } from "@/interfaces";
 
 interface IProps {
   isOpen: boolean;
   handleOpenStateChange: (v: boolean) => void;
+  initialData: ITodo | undefined;
 }
 
 export default function CreateTodoModal({
   isOpen,
   handleOpenStateChange,
+  initialData,
 }: IProps) {
-  const [name, setName] = useState("");
+  const [name, setName] = useState(initialData?.name || "");
 
   const handleSaveTodo = async () => {
-    const { status, data } = await createTodo({ name });
+    if (name.length < 4 || name.length > 40) {
+      showToast("error", "Name must be between 4 and 40 characters");
+      return;
+    }
 
-    if (status == 201) {
-      showToast("success", "To-do successfully created!");
+    const saveFunc = initialData?.slug
+      ? updateTodo(initialData.slug, { name })
+      : createTodo({ name });
+    const { status, data } = await saveFunc;
+
+    if ([200, 201].includes(status as number)) {
+      showToast(
+        "success",
+        status === 200
+          ? "To-do successfully updated!"
+          : "To-do successfully created!"
+      );
       setTimeout(() => {
         handleOpenStateChange(false);
       }, 1500);

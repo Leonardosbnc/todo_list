@@ -63,16 +63,25 @@ RSpec.describe 'v1/todos', type: :request do
     expect(body[:todo][:status]).to eq('pending')
   end
 
-  it "should update todo status" do
+  it "should update todo" do
     todo = create(:todo)
 
     headers = prepare_user_login(todo.user)
-    auth_patch(headers, "/v1/todos/#{todo.slug}", { status: 'completed' }.to_json)
+    auth_patch(headers, "/v1/todos/#{todo.slug}", { name: 'name test', status: 'completed' }.to_json)
 
     expect(response).to have_http_status(200)
     body = JSON.parse(response.body, {:symbolize_names => true})
-    expect(body[:todo][:name]).to eq(todo.name)
+    expect(body[:todo][:name]).to eq('name test')
     expect(body[:todo][:status]).to eq('completed')
+  end
+
+  it "should not update completed todo" do
+    todo = create(:todo, status: 'completed')
+
+    headers = prepare_user_login(todo.user)
+    auth_patch(headers, "/v1/todos/#{todo.slug}", { status: 'pending' }.to_json)
+
+    expect(response).to have_http_status(400)
   end
 
   it "should delete todo" do

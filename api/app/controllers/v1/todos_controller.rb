@@ -29,7 +29,7 @@ class V1::TodosController < ApplicationController
   def destroy
     todo = current_user.todos.find_by_slug(params[:slug])
     unless todo.nil?
-      todo.destroy
+      todo.destroy!
       render status: :no_content
     else
       render json: { error: "To-do not found" }, status: :not_found
@@ -38,6 +38,10 @@ class V1::TodosController < ApplicationController
 
   def update
     todo = current_user.todos.find_by_slug(params[:slug])
+
+    if todo.status == 'completed'
+      return render json: {error: 'Completed to-do can not be updated'}, status: :bad_request
+    end
 
     todo.update(update_todo_params)
     todo.reload
@@ -50,6 +54,6 @@ class V1::TodosController < ApplicationController
   end
 
   def update_todo_params
-    params.require(:todo).permit(:status)
+    params.require(:todo).permit(:name, :status)
   end
 end
