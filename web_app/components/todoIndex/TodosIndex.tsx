@@ -4,7 +4,6 @@ import Button from "../Button";
 import CreateTodoModal from "../modals/CreateTodoModal";
 import { twMerge } from "tailwind-merge";
 import FilterTodosModal from "../modals/FilterTodosModal";
-import Image from "next/image";
 import { ITodo } from "@/interfaces";
 import ConfirmationModal from "../modals/ConfirmationModal";
 import { showToast } from "@/utils/toastHelper";
@@ -14,7 +13,7 @@ import Loader from "../Loader";
 const headers = [
   { label: "Name", className: "w-4/12" },
   { label: "Status", className: "w-3/12" },
-  { label: "Date", className: "w-3/12" },
+  { label: "Created Date", className: "w-3/12" },
   { label: "", className: "w-2/12" },
 ];
 
