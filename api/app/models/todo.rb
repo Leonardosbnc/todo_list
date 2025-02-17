@@ -14,7 +14,7 @@ class Todo < ApplicationRecord
   def unique_slug_for_user
     exists_todo = self.user.todos.select { |t| t.slug == self.slug and t.id != self.id }.count > 0
     if exists_todo
-      errors.add(:name, 'Found To-do with same name')
+      errors.add(:base, 'Found To-do with same name')
     end
   end
 end

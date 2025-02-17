@@ -2,20 +2,20 @@ import { useState } from "react";
 import Input from "./inputs/Input";
 import PasswordInput from "./inputs/PasswordInput";
 import Button from "./Button";
-import { loginUser } from "@/api/users";
-import { showToast } from "@/utils/toastHelper";
+import { createUser } from "@/api/users";
 
-export default function SignInComponent() {
+export default function SignUpComponent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleLogin = async () => {
-    const { success, error } = await loginUser({ user: { email, password } });
-    if (success) {
-      showToast("success", "Successfully logged in!");
-      setTimeout(() => (window.location.href = "/home"), 1500);
+  const handleSignUp = async () => {
+    const { status, data } = await createUser({ user: { email, password } });
+    if (status === 201) {
+      alert("Success");
+      window.location.href = "/";
     } else {
-      showToast("error", error);
+      alert(data?.error || "Something went wrong...");
     }
   };
 
@@ -30,18 +30,25 @@ export default function SignInComponent() {
           <span>Password</span>
           <PasswordInput value={password} setValue={setPassword} />
         </div>
+        <div className="flex flex-col space-y-1">
+          <span>Confirm Password</span>
+          <PasswordInput
+            value={confirmPassword}
+            setValue={setConfirmPassword}
+          />
+        </div>
 
-        <Button onClick={handleLogin} type="save">
-          Login
+        <Button onClick={handleSignUp} type="save">
+          Sign Up
         </Button>
 
         <div className="flex items-center justify-end space-x-1">
-          <span className="text-sm">Don't have an account?</span>
+          <span className="text-sm">Already have an account?</span>
           <span
             className="font-bold underline cursor-pointer"
-            onClick={() => (window.location.href = "/sign-up")}
+            onClick={() => (window.location.href = "/")}
           >
-            Sign up.
+            Login.
           </span>
         </div>
       </div>
