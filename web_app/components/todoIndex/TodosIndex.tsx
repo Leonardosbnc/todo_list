@@ -1,13 +1,14 @@
 import { deleteTodo, getTodos, updateTodo } from "@/api/todos";
 import { useEffect, useState } from "react";
-import Button from "./Button";
-import CreateTodoModal from "./modals/CreateTodoModal";
+import Button from "../Button";
+import CreateTodoModal from "../modals/CreateTodoModal";
 import { twMerge } from "tailwind-merge";
-import FilterTodosModal from "./modals/FilterTodosModal";
+import FilterTodosModal from "../modals/FilterTodosModal";
 import Image from "next/image";
 import { ITodo } from "@/interfaces";
-import ConfirmationModal from "./modals/ConfirmationModal";
+import ConfirmationModal from "../modals/ConfirmationModal";
 import { showToast } from "@/utils/toastHelper";
+import TodoTable from "./TodoTable";
 
 const headers = [
   { label: "Name", className: "w-4/12" },
@@ -119,81 +120,12 @@ export default function TodosIndex() {
           <hr className="w-full border border-black m-0" />
         </div>
 
-        <div className="flex-col w-full space-y-2 h-[75%] overflow-y-scroll">
-          {todos.length > 0 ? (
-            todos.map((todo) => (
-              <div className="flex-col w-full pt-3 space-y-2" key={todo.slug}>
-                <div className="flex w-full">
-                  <span className="w-4/12">{todo.name}</span>
-                  <span
-                    className={twMerge(
-                      "w-3/12 capitalize",
-                      todo.status === "completed"
-                        ? "text-green-500"
-                        : "text-blue-500"
-                    )}
-                  >
-                    {todo.status}
-                  </span>
-                  <span className="w-3/12">
-                    {new Date(todo.created_at).toISOString().split("T")[0]}
-                  </span>
-                  <div className="flex w-2/12 space-x-2 justify-center items-center">
-                    <Image
-                      className={
-                        todo.status === "completed"
-                          ? "cursor-not-allowed opacity-50"
-                          : "cursor-pointer"
-                      }
-                      src="/edit.png"
-                      alt=""
-                      width={20}
-                      height={20}
-                      onClick={() => {
-                        if (todo.status === "completed") return;
-                        setEditModalData(todo);
-                      }}
-                    />
-                    <Image
-                      className={
-                        todo.status === "completed"
-                          ? "cursor-not-allowed opacity-50"
-                          : "cursor-pointer"
-                      }
-                      src="/complete.png"
-                      alt=""
-                      width={20}
-                      height={20}
-                      onClick={() => {
-                        if (todo.status === "completed") return;
-
-                        setSlugToAction(todo.slug);
-                        setConfirmation("complete");
-                      }}
-                    />
-                    <Image
-                      className="cursor-pointer"
-                      src="/delete.png"
-                      alt=""
-                      width={20}
-                      height={20}
-                      onClick={() => {
-                        setSlugToAction(todo.slug);
-                        setConfirmation("delete");
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <hr className="w-full border border-gray-300 m-0" />
-              </div>
-            ))
-          ) : (
-            <div className="flex justify-center items-center">
-              <span className="font-semibold text-xl">No To-Do Found</span>
-            </div>
-          )}
-        </div>
+        <TodoTable
+          todos={todos}
+          setEditModalData={setEditModalData}
+          setSlugToAction={setSlugToAction}
+          setConfirmation={setConfirmation}
+        />
         <div className="flex justify-end">
           <span
             className="text-sm cursor-pointer hover:underline"
