@@ -8,11 +8,14 @@ class V1::TodosController < ApplicationController
       todos = todos.where(status: params[:status])
     end
 
+    todos = todos.select(:slug, :name, :created_at, :status)
+
     render json: { todos: }, status: :ok
   end
 
   def show
     todo = current_user.todos.find_by_slug(params[:slug])
+    todo = todo.slice(:slug, :name, :created_at, :status)
     render json: { todo: }, status: :ok
   end
 
