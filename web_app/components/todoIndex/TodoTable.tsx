@@ -33,7 +33,12 @@ export default function TodoTable({
                 {todo.status}
               </span>
               <span className="w-3/12">
-                {new Date(todo.created_at).toISOString().split("T")[0]}
+                {new Date(todo.created_at)
+                  .toJSON()
+                  .slice(0, 10)
+                  .split("-")
+                  .reverse()
+                  .join("/")}
               </span>
               <div className="flex w-2/12 space-x-2 justify-center items-center">
                 <Image

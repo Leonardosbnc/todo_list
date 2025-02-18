@@ -8,7 +8,7 @@ class V1::TodosController < ApplicationController
       todos = todos.where(status: params[:status])
     end
 
-    todos = todos.select(:slug, :name, :created_at, :status)
+    todos = todos.order(created_at: :desc).select(:slug, :name, :created_at, :status)
 
     render json: { todos: }, status: :ok
   end
