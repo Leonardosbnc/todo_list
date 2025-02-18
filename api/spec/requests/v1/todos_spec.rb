@@ -49,17 +49,21 @@ RSpec.describe 'v1/todos', type: :request do
     expect(response).to have_http_status(200)
     body = JSON.parse(response.body, {:symbolize_names => true})
     expect(body[:todo][:name]).to eq(todo.name)
+    expect(body[:todo][:description]).to eq(todo.description)
+    expect(body[:todo][:status]).to eq(todo.status)
+    expect(body[:todo][:created_at].to_date).to eq(todo.created_at.to_date)
   end
 
   it "should create todo for authenticated user" do
     user = create(:user)
-    post_body = { todo: { name: 'create todo test' } }
+    post_body = { todo: { name: 'create todo test', description: 'Description for todo test' } }
 
     headers = prepare_user_login(user)
     auth_post(headers, '/v1/todos', post_body.to_json)
     expect(response).to have_http_status(201)
     body = JSON.parse(response.body, {:symbolize_names => true})
     expect(body[:todo][:name]).to eq('create todo test')
+    expect(body[:todo][:description]).to eq('Description for todo test')
     expect(body[:todo][:status]).to eq('pending')
   end
 
@@ -67,11 +71,12 @@ RSpec.describe 'v1/todos', type: :request do
     todo = create(:todo)
 
     headers = prepare_user_login(todo.user)
-    auth_patch(headers, "/v1/todos/#{todo.slug}", { name: 'name test', status: 'completed' }.to_json)
+    auth_patch(headers, "/v1/todos/#{todo.slug}", { name: 'name test', status: 'completed', description: 'updated description' }.to_json)
 
     expect(response).to have_http_status(200)
     body = JSON.parse(response.body, {:symbolize_names => true})
     expect(body[:todo][:name]).to eq('name test')
+    expect(body[:todo][:description]).to eq('updated description')
     expect(body[:todo][:status]).to eq('completed')
   end
 

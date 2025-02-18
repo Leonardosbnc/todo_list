@@ -15,7 +15,7 @@ class V1::TodosController < ApplicationController
 
   def show
     todo = current_user.todos.find_by_slug(params[:slug])
-    todo = todo.slice(:slug, :name, :created_at, :status)
+    todo = todo.slice(:slug, :name, :description, :created_at, :updated_at, :status)
     render json: { todo: }, status: :ok
   end
 
@@ -53,10 +53,10 @@ class V1::TodosController < ApplicationController
   end
 
   def todo_params
-    params.require(:todo).permit(:name)
+    params.require(:todo).permit(:name, :description)
   end
 
   def update_todo_params
-    params.require(:todo).permit(:name, :status)
+    params.require(:todo).permit(:name, :description, :status)
   end
 end

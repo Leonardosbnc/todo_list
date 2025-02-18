@@ -6,6 +6,10 @@ export const getTodos = async (params: any) => {
   return request("GET", "/v1/todos", null, formattedParams);
 };
 
+export const getTodo = async (slug: string) => {
+  return request("GET", `/v1/todos/${slug}`);
+};
+
 export const createTodo = async (data: any) => {
   return request("POST", "/v1/todos", data);
 };

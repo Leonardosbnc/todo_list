@@ -6,6 +6,7 @@ import { createTodo, updateTodo } from "@/api/todos";
 import { showToast } from "@/utils/toastHelper";
 import { ITodo } from "@/interfaces";
 import Loader from "../Loader";
+import TextArea from "../inputs/TextArea";
 
 interface IProps {
   isOpen: boolean;
@@ -19,6 +20,9 @@ export default function CreateTodoModal({
   initialData,
 }: IProps) {
   const [name, setName] = useState(initialData?.name || "");
+  const [description, setDescription] = useState(
+    initialData?.description || ""
+  );
   const [saving, setSaving] = useState(false);
 
   const handleSaveTodo = async () => {
@@ -31,8 +35,8 @@ export default function CreateTodoModal({
     setSaving(true);
 
     const saveFunc = initialData?.slug
-      ? updateTodo(initialData.slug, { name })
-      : createTodo({ name });
+      ? updateTodo(initialData.slug, { name, description })
+      : createTodo({ name, description });
     const { status, data } = await saveFunc;
 
     if ([200, 201].includes(status as number)) {
@@ -57,8 +61,15 @@ export default function CreateTodoModal({
         <span className="font-bold text-lg">Create new To-do</span>
 
         <div className="flex-col space-y-1">
-          <span>Name</span>
-          <Input setValue={setName} value={name} />
+          <Input setValue={setName} value={name} label="Name" />
+        </div>
+        <div className="flex-col space-y-1">
+          <TextArea
+            setValue={setDescription}
+            value={description}
+            label="Description"
+            optional
+          />
         </div>
 
         <Button type="save" onClick={handleSaveTodo}>

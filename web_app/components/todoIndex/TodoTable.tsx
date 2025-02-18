@@ -1,33 +1,55 @@
+import { getTodo } from "@/api/todos";
 import { ITodo } from "@/interfaces";
 import Image from "next/image";
 import { twMerge } from "tailwind-merge";
 
 interface TodoTableProps {
   todos: ITodo[];
-  setEditModalData: (todo: ITodo) => void;
+  setEditModalOpen: (v: boolean) => void;
+  setDetailsModalOpen: (v: boolean) => void;
+  setSelectedTodoData: (todo: ITodo) => void;
   setSlugToAction: (slug: string) => void;
   setConfirmation: (action: "complete" | "delete") => void;
 }
 
 export default function TodoTable({
   todos,
-  setEditModalData,
+  setSelectedTodoData,
   setSlugToAction,
   setConfirmation,
+  setEditModalOpen,
+  setDetailsModalOpen,
 }: TodoTableProps) {
+  const handleSetTodoData = async (
+    todo: ITodo,
+    callBack: (v: boolean) => void
+  ) => {
+    const { data } = await getTodo(todo.slug);
+    setSelectedTodoData(data.todo);
+
+    setTimeout(() => callBack(true), 200);
+  };
+
   return (
     <div className="flex-col w-full space-y-2 h-[75%] overflow-y-auto md:text-normal text-sm">
       {todos.length > 0 ? (
         todos.map((todo) => (
           <div className="flex-col w-full pt-3 space-y-2" key={todo.slug}>
             <div className="flex w-full items-center">
-              <span className="w-4/12 break-all">{todo.name}</span>
+              <span
+                className="w-4/12 break-all cursor-pointer text-blue-600 hover:underline"
+                onClick={() => {
+                  handleSetTodoData(todo, setDetailsModalOpen);
+                }}
+              >
+                {todo.name}
+              </span>
               <span
                 className={twMerge(
                   "w-3/12 capitalize",
                   todo.status === "completed"
                     ? "text-green-500"
-                    : "text-blue-500"
+                    : "text-yellow-600"
                 )}
               >
                 {todo.status}
@@ -53,7 +75,8 @@ export default function TodoTable({
                   height={20}
                   onClick={() => {
                     if (todo.status === "completed") return;
-                    setEditModalData(todo);
+
+                    handleSetTodoData(todo, setEditModalOpen);
                   }}
                 />
                 <Image

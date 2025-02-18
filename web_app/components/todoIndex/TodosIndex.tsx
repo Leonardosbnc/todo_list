@@ -9,6 +9,7 @@ import ConfirmationModal from "../modals/ConfirmationModal";
 import { showToast } from "@/utils/toastHelper";
 import TodoTable from "./TodoTable";
 import Loader from "../Loader";
+import TodoDetailsModal from "../modals/TodoDetailsModal";
 
 const headers = [
   { label: "Name", className: "w-4/12" },
@@ -21,7 +22,9 @@ export default function TodosIndex() {
   const [todos, setTodos] = useState<ITodo[]>([]);
   const [status, setStatus] = useState<string | undefined>();
   const [createModalOpen, setCreateModalOpen] = useState(false);
-  const [editModalData, setEditModalData] = useState<ITodo | undefined>();
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [detailsModalOpen, setDetailsModalOpen] = useState(false);
+  const [selectedTodoData, setSelectedTodoData] = useState<ITodo | undefined>();
   const [loading, setLoading] = useState(true);
   const [filterModalOpen, setFilterModalOpen] = useState(false);
   const [confirmation, setConfirmation] = useState<
@@ -112,7 +115,10 @@ export default function TodosIndex() {
             {headers.map((header) => {
               return (
                 <span
-                  className={twMerge("md:text-lg font-semibold", header.className)}
+                  className={twMerge(
+                    "md:text-lg font-semibold",
+                    header.className
+                  )}
                   key={header.label}
                 >
                   {header.label}
@@ -129,9 +135,11 @@ export default function TodosIndex() {
         ) : (
           <TodoTable
             todos={todos}
-            setEditModalData={setEditModalData}
             setSlugToAction={setSlugToAction}
             setConfirmation={setConfirmation}
+            setSelectedTodoData={setSelectedTodoData}
+            setEditModalOpen={setEditModalOpen}
+            setDetailsModalOpen={setDetailsModalOpen}
           />
         )}
         <div className="flex justify-end">
@@ -144,15 +152,22 @@ export default function TodosIndex() {
         </div>
       </div>
 
-      {(createModalOpen || !!editModalData) && (
+      {(createModalOpen || editModalOpen) && (
         <CreateTodoModal
-          isOpen={createModalOpen || !!editModalData}
+          isOpen={createModalOpen || editModalOpen}
           handleOpenStateChange={(isOpen) => {
             setCreateModalOpen(isOpen);
-            setEditModalData(undefined);
+            setEditModalOpen(isOpen);
             fetchTodos();
           }}
-          initialData={editModalData}
+          initialData={editModalOpen ? selectedTodoData : undefined}
+        />
+      )}
+      {detailsModalOpen && selectedTodoData && (
+        <TodoDetailsModal
+          todo={selectedTodoData}
+          handleOpenStateChange={setDetailsModalOpen}
+          isOpen={detailsModalOpen}
         />
       )}
       {!!confirmation && (

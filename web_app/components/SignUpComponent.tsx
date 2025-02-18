@@ -34,18 +34,20 @@ export default function SignUpComponent() {
         </div>
 
         <div className="flex flex-col space-y-1">
-          <span>Email</span>
-          <Input value={email} setValue={setEmail} />
+          <Input value={email} setValue={setEmail} label="Email" />
         </div>
         <div className="flex flex-col space-y-1">
-          <span>Password</span>
-          <PasswordInput value={password} setValue={setPassword} />
+          <PasswordInput
+            value={password}
+            setValue={setPassword}
+            label="Password"
+          />
         </div>
         <div className="flex flex-col space-y-1">
-          <span>Confirm Password</span>
           <PasswordInput
             value={confirmPassword}
             setValue={setConfirmPassword}
+            label="Confirm Password"
           />
         </div>
 

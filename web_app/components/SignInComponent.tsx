@@ -28,12 +28,14 @@ export default function SignInComponent() {
         </div>
 
         <div className="flex flex-col space-y-1 mt-2">
-          <span>Email</span>
-          <Input value={email} setValue={setEmail} />
+          <Input value={email} setValue={setEmail} label="Email" />
         </div>
         <div className="flex flex-col space-y-1">
-          <span>Password</span>
-          <PasswordInput value={password} setValue={setPassword} />
+          <PasswordInput
+            value={password}
+            setValue={setPassword}
+            label="Password"
+          />
         </div>
 
         <Button onClick={handleLogin} type="save">

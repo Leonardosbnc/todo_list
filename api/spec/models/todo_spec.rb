@@ -3,9 +3,10 @@ require 'rails_helper'
 RSpec.describe Todo, type: :model do
   it 'correctly create todo with slug' do
     user = create(:user)
-    todo = Todo.create(name: 'Todo 1', user:)
+    todo = Todo.create(name: 'Todo 1', description: 'description for todo 1', user:)
 
     expect(todo.name).to eq("Todo 1")
+    expect(todo.description).to eq("description for todo 1")
     expect(todo.user_id).to eq(user.id)
     expect(todo.status).to eq("pending")
     expect(todo.slug).to eq("todo-1")
