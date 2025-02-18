@@ -44,7 +44,7 @@ export default function BaseModal({
 
   useEffect(() => {
     if (element) element.style.overflow = isOpen ? "hidden" : "auto";
-  }, [isOpen]);
+  }, [isOpen, element]);
 
   return (
     element &&

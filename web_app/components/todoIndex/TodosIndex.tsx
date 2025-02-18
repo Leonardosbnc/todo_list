@@ -83,7 +83,7 @@ export default function TodosIndex() {
 
   useEffect(() => {
     fetchTodos();
-  }, [status]);
+  }, [status]); // eslint-disable-line
 
   return (
     <div className="flex justify-center h-screen">

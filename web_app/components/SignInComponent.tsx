@@ -41,7 +41,7 @@ export default function SignInComponent() {
         </Button>
 
         <div className="flex items-center justify-end space-x-1">
-          <span className="text-sm">Don't have an account?</span>
+          <span className="text-sm">Don&#39;t have an account?</span>
           <span
             className="font-bold underline cursor-pointer"
             onClick={() => (window.location.href = "/sign-up")}
