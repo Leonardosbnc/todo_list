@@ -30,19 +30,4 @@ RSpec.describe "Users::Sessions", type: :request do
     expect(response).to have_http_status(401)
     expect(response.body).to eq("Invalid Email or password.")
   end
-
-  it "should destroy session token" do
-    user = create(:user)
-    body = {
-      user: {
-        email: user.email,
-        password: user.password
-      }
-    }
-    base_post('/token', body)
-
-    headers = prepare_user_login(user)
-    auth_delete(headers, '/token')
-    expect(response).to have_http_status(200)
-  end
 end

@@ -51,4 +51,5 @@ jobs:
         env:
           RAILS_ENV: test
           PG_HOST: localhost
+          devise_jwt_secret_key: jwt_secret_key
         run: bundle exec rspec
