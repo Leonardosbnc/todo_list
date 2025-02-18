@@ -16,12 +16,12 @@ export default function TodoTable({
   setConfirmation,
 }: TodoTableProps) {
   return (
-    <div className="flex-col w-full space-y-2 h-[75%] overflow-y-scroll">
+    <div className="flex-col w-full space-y-2 h-[75%] overflow-y-auto md:text-normal text-sm">
       {todos.length > 0 ? (
         todos.map((todo) => (
           <div className="flex-col w-full pt-3 space-y-2" key={todo.slug}>
-            <div className="flex w-full">
-              <span className="w-4/12">{todo.name}</span>
+            <div className="flex w-full items-center">
+              <span className="w-4/12 break-all">{todo.name}</span>
               <span
                 className={twMerge(
                   "w-3/12 capitalize",

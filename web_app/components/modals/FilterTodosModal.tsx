@@ -18,7 +18,7 @@ export default function FilterTodosModal({
   return (
     <BaseModal isOpen={isOpen} handleOpenStateChange={handleOpenStateChange}>
       <div className="flex-col space-y-4">
-        <span className="font-bold text-lg">Create new To-do</span>
+        <span className="font-bold text-lg">Filters</span>
 
         <div className="flex flex-col space-y-1">
           <span className="font-semibold">Status</span>

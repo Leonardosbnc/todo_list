@@ -87,7 +87,7 @@ export default function TodosIndex() {
 
   return (
     <div className="flex justify-center h-screen">
-      <div className="flex flex-col space-y-3 w-3/5 mt-11">
+      <div className="flex flex-col space-y-3 p-2 md:w-3/5 w-full md:mt-11">
         <span className="text-xl font-bold">TO-DOs</span>
 
         <div className="flex-col h-18 mt-4 w-full">
@@ -108,11 +108,11 @@ export default function TodosIndex() {
               New To-do
             </Button>
           </div>
-          <div className="flex w-full">
+          <div className="flex w-full items-center">
             {headers.map((header) => {
               return (
                 <span
-                  className={twMerge("text-lg font-semibold", header.className)}
+                  className={twMerge("md:text-lg font-semibold", header.className)}
                   key={header.label}
                 >
                   {header.label}
