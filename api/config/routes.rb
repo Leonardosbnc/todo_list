@@ -7,7 +7,12 @@ Rails.application.routes.draw do
     controllers: { sessions: 'users/sessions' }
 
   namespace :v1, defaults: { format: :json } do
-    resources :users, only: %i[create]
+    resources :users, only: %i[create] do
+      collection do
+        post "send_reset_password", to: 'users#send_reset_password'
+        post "reset_password", to: 'users#reset_password'
+      end
+    end
     resources :todos, param: :slug
   end
 end

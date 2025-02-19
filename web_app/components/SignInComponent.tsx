@@ -35,6 +35,7 @@ export default function SignInComponent() {
             value={password}
             setValue={setPassword}
             label="Password"
+            recoverable
           />
         </div>
 

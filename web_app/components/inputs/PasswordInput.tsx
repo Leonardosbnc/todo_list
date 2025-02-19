@@ -3,6 +3,7 @@ import { useState } from "react";
 
 interface PasswordInputProps {
   label: string;
+  recoverable?: boolean;
   value: string;
   setValue: (v: string) => void;
 }
@@ -11,12 +12,23 @@ export default function PasswordInput({
   label,
   value,
   setValue,
+  recoverable = false,
 }: PasswordInputProps) {
   const [visible, setVisible] = useState(false);
 
   return (
     <>
-      <span>{label}</span>
+      <div className="flex items-center space-x-1">
+        <span>{label}</span>
+        {recoverable && (
+          <span
+            className="cursor-pointer text-xs hover:underline text-gray-600 mt-1"
+            onClick={() => (window.location.href = "/recover-password")}
+          >
+            Forgot password?
+          </span>
+        )}
+      </div>
       <div className="flex w-full rounded-lg py-1 text-black border border-1 border-black bg-gray-100 space-x-1">
         <input
           className="w-10/12 focus:outline-none bg-gray-100 px-2"

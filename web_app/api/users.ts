@@ -17,6 +17,14 @@ export async function loginUser(data: {
   };
 }
 
+export async function sendResetPasswordEmail(data: { email: string }) {
+  return request("POST", "/v1/users/send_reset_password", data);
+}
+
+export async function resetPassword(data: { token: string; password: string }) {
+  return request("POST", "/v1/users/reset_password", data);
+}
+
 export async function createUser(data: {
   user: { email: string; password: string };
 }) {

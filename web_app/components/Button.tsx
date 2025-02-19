@@ -6,6 +6,7 @@ interface ButtonProps {
   children: ReactNode;
   width?: string;
   type: "save" | "normal" | "filter" | "delete";
+  disabled?: boolean;
 }
 
 export default function Button({
@@ -13,6 +14,7 @@ export default function Button({
   children,
   type,
   width = "w-full",
+  disabled = false,
 }: ButtonProps) {
   const getTypeClassName = () => {
     const defaultClassName =
@@ -36,9 +38,11 @@ export default function Button({
       onClick={onClick}
       className={twMerge(
         "border border-1 rounded-lg h-9",
+        disabled ? "cursor-not-allowed" : "cursor-pointer",
         getTypeClassName(),
         width
       )}
+      disabled={disabled}
     >
       {children}
     </button>
